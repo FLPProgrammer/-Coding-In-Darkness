@@ -1,3 +1,7 @@
+// ========== EXERCÍCIO 27: SISTEMA DE USUÁRIOS E SERVIÇOS ==========
+// Conceitos: Classes, encapsulamento, responsabilidade única e injeção de dependência.
+// Objetivo: Gerenciar usuários, autenticação, relatórios, e-mails e cálculo salarial.
+
 /*class User {
     name: string;
     email: string;
@@ -121,8 +125,13 @@ class Application {
 const app = new Application();
 app.start();*/
 
+// ========== EXERCÍCIO 28: SISTEMA DE BIBLIOTECA ==========
+// Conceitos: Classes, composição, arrays de objetos e regras de negócio.
+// Objetivo: Cadastrar livros e usuários, registrar empréstimos, devolver livros
+// e identificar empréstimos atrasados.
 
-class Book {
+
+/*class Book {
     title: string;
     author: string;
     isbn: string;
@@ -246,9 +255,251 @@ class Library {
         return 'This book was lent sucessfully!';
     }
   
-    returnBook(loan: Loan): string {
+returnBook(loan: Loan): string {
+    const registeredLoan = this.allLoans.find(
+        (item) => item === loan
+    );
 
+    if (!registeredLoan) {
+        throw new Error('Loan not registered!');
     }
 
-    getOverdueLoans()
+    if (registeredLoan.returnDate !== null) {
+        throw new Error('This book has already been returned!');
+    }
+
+    registeredLoan.returnDate = new Date();
+    registeredLoan.book.available = true;
+
+    return 'Book returned successfully!';
 }
+
+  getOverdueLoans(): Loan[] {
+    const today = new Date();
+
+    return this.allLoans.filter(
+        (loan) =>
+            loan.returnDate === null &&
+            loan.dueDate < today
+    );
+}
+}*/
+
+// ========== EXERCÍCIO 29: MINI E-COMMERCE ==========
+// Conceitos: Interfaces, polimorfismo, composição e injeção de dependência.
+// Objetivo: Gerenciar produtos, usuários, carrinho, pedidos e pagamentos.
+// Fluxo: Adicionar produtos -> Calcular total -> Processar pagamento -> Criar pedido.
+
+
+interface PaymentMethod {
+    pay(): void;
+}
+
+class Checkout {
+    processPayment(payment: PaymentMethod): void {
+        payment.pay()
+    }
+}
+
+class CreditCardPayment implements PaymentMethod {
+    pay(): void {
+        console.log('You are using - [Credit Card]')
+    }
+}
+
+class PixPayment implements PaymentMethod {
+    pay(): void {
+        console.log('You are using - [Pix]')
+    }
+}
+
+
+class Product {
+    id: number;
+    name: string;
+    price: number;
+    stock: number;
+
+    constructor(
+        id: number,
+        name: string,
+        price: number,
+        stock: number,
+    ) {
+        this.id = id;
+        this.name = name;
+        this.price= price;
+        this.stock = stock;
+    }
+
+}
+
+class User {
+    id: number;
+    name: string;
+    email: string;
+
+    constructor(
+        id: number,
+        name: string,
+        email: string,
+    ) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
+
+}
+
+
+class Cart {
+
+    constructor(private products: CartItem[]) {}
+
+    addProduct(product: Product, quantity: number): string {
+        if(product.stock < quantity) {
+            throw new Error('We do not have this amount available.')
+        }
+        
+        if(product.price <= 0) {
+            throw new Error('This price is invalid')
+        }
+
+        if(product.stock <= 0) {
+            throw new Error('This stock amount is invalid')
+        }
+
+
+        const cartItem = new CartItem(product, quantity);
+        
+        const registeredProduct = this.products.find((item) => item.product.id === product.id);   
+        
+         if(registeredProduct) {
+            if(registeredProduct.quantity + quantity > product.stock) {
+                throw new Error('Insufficient stock')
+            }
+            registeredProduct.quantity += quantity
+
+         } else {
+            this.products.push(cartItem);
+         }
+
+
+        return 'Product was added to cart sucessfully';
+    }
+
+    removeProduct(id: number): string {
+        const newProducts = this.products.filter(item => item.product.id !== id);
+        this.products = newProducts;
+        return 'The product was removed from cart sucessfuly'
+    }
+
+   calculateTotal(): number {
+        return this.products.reduce(
+        (total, item) => total + item.calculateSubTotal(),
+        0
+    );   
+}
+    getItems(): CartItem[] {
+        return [...this.products];
+    }
+
+    isEmpty(): boolean {
+        return this.products.length === 0;
+    }
+
+    clear(): void {
+        this.products = [];
+    }
+
+}
+
+class CartItem {
+    product: Product;
+    quantity: number;
+
+    constructor(product: Product, quantity: number) {
+        this.product = product;
+        this.quantity = quantity
+    }
+
+    calculateSubTotal(): number {
+        return this.product.price * this.quantity;
+    }
+}
+
+
+class Order {
+    user: User;
+    acquiredItems: CartItem[];
+    total: number;
+    private status: boolean;
+
+    constructor(
+        user: User,
+        acquiredItems: CartItem[],
+        total: number,
+        status: boolean,
+    ) {
+        this.user = user;
+        this.acquiredItems = acquiredItems;
+        this.total = total;
+        this.status = status;
+    }
+
+    markAsPaid(): void {
+        this.status = true;
+    }
+
+    getStatus(): boolean {
+        return this.status;
+    }
+}
+
+
+class Store {
+    private checkout = new Checkout();
+
+    createOrder(
+        user: User,
+        cart: Cart,
+        payment: PaymentMethod,
+    ): Order {
+        if (cart.isEmpty()) {
+            throw new Error('Cannot checkout an empty cart');
+        }
+
+        const items = cart.getItems();
+        const total = cart.calculateTotal();
+
+        // Verifica o estoque antes do pagamento.
+        for (const item of items) {
+            if (item.quantity > item.product.stock) {
+                throw new Error(
+                    `Insufficient stock for ${item.product.name}`
+                );
+            }
+        }
+
+        const order = new Order(
+            user,
+            items,
+            total,
+            false,
+        );
+
+        this.checkout.processPayment(payment);
+
+        // Simula a confirmação do pagamento.
+        for (const item of items) {
+            item.product.stock -= item.quantity;
+        }
+
+        order.markAsPaid();
+        cart.clear();
+
+        return order;
+    }
+}
+
+
