@@ -291,7 +291,7 @@ returnBook(loan: Loan): string {
 // Fluxo: Adicionar produtos -> Calcular total -> Processar pagamento -> Criar pedido.
 
 
-interface PaymentMethod {
+/*interface PaymentMethod {
     pay(): void;
 }
 
@@ -500,6 +500,47 @@ class Store {
 
         return order;
     }
+}*/
+
+
+
+// ========== EXERCÍCIO 30: SISTEMA DE NOTIFICAÇÕES ==========
+// Conceitos: Interfaces e polimorfismo.
+// Objetivo: Enviar notificações por Email, SMS e Push.
+
+
+/*interface Notification {
+    send(message: string): void;
 }
+
+class EmailNotification implements Notification {
+    send(message: string): void {
+        console.log(`Email: ${message}`)
+    }
+}
+
+class SMSNotification implements Notification {
+    send(message: string): void {
+        console.log(`SMS: ${message}`)
+    }
+}
+
+class PushNotification implements Notification {
+    send(message: string): void {
+        console.log(`Push:  ${message}`)
+    }
+}
+
+class NotificationService {
+    notify(service: Notification, message: string): void {
+        service.send(message)
+    }
+}
+
+const notificationService = new NotificationService();
+
+notificationService.notify(new EmailNotification(), 'Hello!');
+notificationService.notify(new SMSNotification(), 'Hello!');
+notificationService.notify(new PushNotification(), 'Hello!');*/
 
 
