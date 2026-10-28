@@ -414,3 +414,205 @@ function calculate(a: number, b: number, operation: (a: number, b: number) => nu
 console.log(calculate(10, 20, sum));
 console.log(calculate(20, 5, subtract));*/
 
+/*
+ *==========================================*
+ * Exercício 08.02 - Event Loop e Timers Aninhados
+ *==========================================*
+ *
+ * Objetivo:
+ * Compreender o agendamento e a ordem de execução de
+ * callbacks do setTimeout, incluindo timers aninhados.
+ *
+ * O que aprendemos:
+ * - O código síncrono executa antes dos callbacks dos timers.
+ * - setTimeout define um atraso mínimo, não um horário
+ *   garantido de execução.
+ * - Um timer aninhado só é agendado quando seu callback
+ *   externo é executado.
+ * - Timers aninhados não executam imediatamente após serem
+ *   agendados; eles aguardam sua vez no Event Loop.
+ * - A ordem de execução depende do agendamento e das filas
+ *   de tarefas do ambiente.
+ *
+ */
+
+/*console.log("a");
+
+setTimeout(() => {
+    console.log("b");
+
+    setTimeout(() => {
+        console.log("c");
+    }, 0);
+}, 0);
+
+setTimeout(() => {
+    console.log("d");
+
+    setTimeout(() => {
+        console.log("e");
+    }, 0);
+}, 0);
+
+console.log("f");*/
+
+
+/*function* generateLoot() {
+    console.log("Gerando a primeira recompensa");
+
+    yield "Gold";
+
+    console.log("Gerando a segunda recompensa");
+
+    yield "Diamond"
+}
+
+
+const warrior = {
+    name: "Felipe",
+    attack() {
+        return ("Attack now!")
+    }
+}
+
+const inventory = ["Sword", "Shield", "Potion"];
+
+for(const item of inventory) {
+    console.log(item);
+}
+
+
+console.log(warrior.name)
+console.log(warrior.attack());
+console.log(warrior.toString());
+
+console.log(Object.getPrototypeOf(warrior));
+console.log(Object.getPrototypeOf(Object.getPrototypeOf(warrior)));
+
+const loot = generateLoot();
+
+console.log(loot.next());
+console.log(loot.next());
+
+
+function* counter() {
+    console.log("Início");
+
+    yield 10;
+
+    console.log("Meio");
+
+    yield 20;
+
+    console.log("Fim");
+
+    return 30;
+}
+
+const iterator = counter();
+
+console.log("A");
+console.log(iterator.next());
+console.log("B");
+console.log(iterator.next());
+console.log(iterator.next());
+console.log(iterator.next());*/
+
+/*
+ *==========================================*
+ * Exercício 10.01 - Busca Linear vs. Map
+ *==========================================*
+ *
+ * Objetivo:
+ * Comparar a busca linear com Array.find() e a busca
+ * por chave utilizando Map.
+ *
+ * O que aprendemos:
+ * - find() percorre o array até encontrar o elemento desejado.
+ * - Map associa chaves a valores.
+ * - Map.set() adiciona ou atualiza uma entrada.
+ * - Map.get() busca um valor pela chave.
+ * - A busca linear tem complexidade O(n) no pior caso.
+ * - Map.get() possui complexidade média O(1).
+ * - Map exige memória adicional e pode compensar em consultas
+ *   repetidas quando sua construção é reutilizada.
+ *
+ */
+
+/*type User = {
+    id: number;
+    name: string;
+};
+
+const users: User[] = [
+    { id: 101, name: "Arthur" },
+    { id: 102, name: "Luna" },
+    { id: 103, name: "Leon" },
+    { id: 104, name: "Maya" },
+    { id: 105, name: "Ragnar" },
+];
+
+const userMap = new Map<number, User>();
+
+function findUserById(id: number) {
+    const user = users.find((user) => user.id === id);
+    return user;
+}
+
+users.forEach((user) => {
+    userMap.set(user.id, user);
+});
+
+const userFindUsingMap = userMap.get(103);
+
+console.log(findUserById(101));
+console.log(userFindUsingMap);*/
+
+/*
+ *==========================================*
+ * Exercício 11.01 - Types, Interfaces e Union Types
+ *==========================================*
+ *
+ * Objetivo:
+ * Modelar objetos com type e interface e compreender
+ * unions e interseções de tipos.
+ *
+ * O que aprendemos:
+ * - type cria aliases para tipos e permite unions e interseções.
+ * - interface define a estrutura de um objeto e permite
+ *   declaration merging.
+ * - Union (|) permite que um valor pertença a um entre
+ *   vários tipos possíveis.
+ * - Interseção (&) combina propriedades de diferentes tipos.
+ * - O TypeScript verifica se os objetos respeitam suas estruturas.
+ *
+ */
+
+/*type User = {
+    id: number;
+    name: string;
+    email: string;
+};
+
+interface Admin {
+    id: number;
+    name: string;
+    permissions: string[];
+}
+
+type Status = "active" | "inactive";
+type AdminUser = User & { permissions: string[] };
+
+const user: User = {
+    id: 1,
+    name: "Felipe",
+    email: "felipe@email.com",
+};
+
+const admin: Admin = {
+    id: 2,
+    name: "Claudete do Megão",
+    permissions: ["create user", "delete user"],
+};*/
+
+
