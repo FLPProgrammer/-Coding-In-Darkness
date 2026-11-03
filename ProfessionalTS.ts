@@ -616,3 +616,76 @@ const admin: Admin = {
 };*/
 
 
+ 
+/*
+ *==========================================*
+ * Exercício 12.01 - Discriminated Unions
+ *==========================================*
+ *
+ * Objetivo:
+ * Modelar estados de uma requisição utilizando
+ * Discriminated Unions.
+ *
+ * O que aprendemos:
+ * - Utilizar unions (|) para representar diferentes formatos.
+ * - Criar uma propriedade discriminadora (status).
+ * - Utilizar switch para identificar cada estado.
+ * - Type Narrowing: o TypeScript identifica o tipo específico
+ *   conforme o valor da propriedade status.
+ * - Acessar propriedades específicas de cada estado com
+ *   segurança de tipos.
+ *
+ */
+
+type ApiState =
+    | { status: 'loading' }
+    | { status: 'success', data: string }
+    | { status: 'error', message: string };
+
+function handleApiState(state: ApiState) {
+    switch (state.status) {
+        case 'loading':
+            console.log('Your requisition is loading...');
+            break;
+
+        case 'success':
+            console.log(`Your requisition was successfully completed: ${state.data}`);
+            break;
+
+        case 'error':
+            console.log(`Houston, we have a problem: ${state.message}`);
+            break;
+    }
+}
+
+handleApiState({ status: 'loading' });
+handleApiState({ status: 'success', data: "Watchers API carregada!" });
+handleApiState({ status: 'error', message: 'Sorry, we had an unidentified error.' });   
+
+
+/*
+ *==========================================*
+ * Exercício 13.01 - Funções Genéricas
+ *==========================================*
+ *
+ * Objetivo:
+ * Criar uma função genérica capaz de receber e retornar
+ * diferentes tipos de dados preservando sua tipagem.
+ *
+ * O que aprendemos:
+ * - Generics (<T>) permitem criar funções reutilizáveis.
+ * - T representa um tipo definido durante a chamada da função.
+ * - O parâmetro e o retorno podem compartilhar o mesmo tipo.
+ * - O TypeScript consegue inferir o tipo automaticamente.
+ * - Podemos informar explicitamente o tipo usando <string>,
+ *   <number>, <boolean>, entre outros.
+ *
+ */
+
+function identity<T>(value: T): T {
+    return value;
+}
+
+const name = identity<string>('Felipe');
+const age = identity<number>(26);
+const active = identity<boolean>(true);
