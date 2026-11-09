@@ -682,10 +682,149 @@ handleApiState({ status: 'error', message: 'Sorry, we had an unidentified error.
  *
  */
 
-function identity<T>(value: T): T {
+/*function identity<T>(value: T): T {
     return value;
 }
 
 const name = identity<string>('Felipe');
 const age = identity<number>(26);
-const active = identity<boolean>(true);
+const active = identity<boolean>(true);*/
+
+/*
+ *==========================================*
+ * Exercício 14.01 - Utility Types
+ *==========================================*
+ *
+ * Objetivo:
+ * Transformar estruturas de tipos existentes utilizando
+ * Utility Types do TypeScript.
+ *
+ * O que aprendemos:
+ * - Partial<T>: torna todas as propriedades opcionais.
+ * - Pick<T, K>: seleciona propriedades específicas.
+ * - Omit<T, K>: remove propriedades específicas.
+ * - Readonly<T>: impede alterações nas propriedades.
+ * - Required<T>: torna todas as propriedades obrigatórias.
+ *
+ */
+
+
+
+type User = {  
+    id: number;
+    name: string,
+    email: string,
+    age: number,
+};
+
+type UpdateUser = Partial<User>
+
+type SpecificProperties = Pick<User, 'id' | 'email'>
+
+type PublicUser = Omit<User, 'id' | 'email'>;
+
+type ImmutableUser = Readonly<User>;
+
+type CompleteUser = Required<User>;
+
+const newUser: User = {id: 1, name: 'Felipe', email: 'lplpfwr@gmail.com', age: 26};
+
+const updateUser: UpdateUser = {
+    name: 'Felipe Lima',
+    age: 26
+}
+
+const userSpecificProperties: SpecificProperties = {
+    id: 2,
+    email: 'cachorrobelga@email.com'
+};
+
+const publicUser: PublicUser = {
+    name: 'Felipe',
+    age: 26
+}
+
+
+const immutableUser: ImmutableUser = {
+    id: 1,
+    name: 'Felipe',
+    email: 'felipe@email.com',
+    age: 26
+}
+
+
+
+const userRequired: CompleteUser = {
+    id: 1,
+    name: 'Felipe',
+    email: 'felipe@email.com',
+    age: 26
+}
+
+/*
+ *==========================================*
+ * Exercício 15.01 - Tipagem Rigorosa
+ *==========================================*
+ *
+ * Objetivo:
+ * Configurar verificações rigorosas no TypeScript.
+ *
+ * O que praticaremos:
+ * - strict: ativa verificações rigorosas de tipos.
+ * - noUncheckedIndexedAccess: considera undefined
+ *   em acessos potencialmente inexistentes.
+ * - Tratamento seguro de valores opcionais.
+ * - Correção de erros sem recorrer a any.
+ *
+ */
+
+/*
+ *==========================================*
+ * Exercício 16.01 - Classes e Encapsulamento
+ *==========================================*
+ *
+ * Objetivo:
+ * Implementar uma conta bancária utilizando encapsulamento.
+ *
+ * O que praticaremos:
+ * - Classes e construtores.
+ * - Modificadores private e readonly.
+ * - Validação de regras de negócio.
+ * - Proteção do estado interno de um objeto.
+ * - Testes de operações válidas e inválidas.
+ *
+ */
+
+
+ 
+
+class BankAccount {
+    private balance: number;
+
+    constructor(balance: number){
+        this.balance = balance;
+    }
+
+    deposit(amount: number): void {
+        if(amount <= 0) {
+            console.log('O valor precisa ser maior que zero')
+        }
+        this.balance += amount;
+    }
+
+    withdraw(amount: number): void{
+        if(amount <= 0) {
+            console.log('O valor precisa ser maior que zero!')
+        }
+        if(amount > this.balance){
+            console.log('Você não possui esse valor!')
+        }
+
+        this.balance -= amount;
+    }
+
+    getBalance(): void {
+        console.log(`Saldo atual: ${this.balance}R$`)
+    }
+
+}
