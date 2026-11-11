@@ -795,7 +795,7 @@ const userRequired: CompleteUser = {
  *
  */
 
-
+/*
  
 
 class BankAccount {
@@ -827,4 +827,104 @@ class BankAccount {
         console.log(`Saldo atual: ${this.balance}R$`)
     }
 
+}
+*/
+
+ /**==========================================*
+ * Exercício 17.01 - Composição e Injeção de Dependências
+ *==========================================*
+ *
+ * Objetivo:
+ * Criar um sistema de notificações utilizando interfaces
+ * e injeção de dependências.
+ *
+ * O que aprendemos:
+ * - Interfaces definem contratos para as classes.
+ * - implements obriga a implementação dos métodos exigidos.
+ * - Composição permite que classes utilizem outras classes.
+ * - Injeção de dependências permite fornecer dependências
+ *   externamente pelo construtor.
+ * - Polimorfismo permite utilizar diferentes implementações
+ *   através de uma mesma interface.
+ * - Desacoplamento separa o serviço das implementações
+ *   específicas dos canais de notificação.
+ *
+ */
+
+
+/*interface NotificationChannel {
+    send(message: string): void;
+}
+
+
+
+class EmailNotification implements NotificationChannel {
+    send(message: string): void {
+        console.log(`Send email: ${message}`);
+    }
+}
+
+class SMSNotification implements NotificationChannel {
+    send(message: string): void {
+        console.log(`Send SMS: ${message}`)
+    }
+}
+
+
+class NotificationService {
+    constructor(private channel: NotificationChannel) {}
+
+    notify(message: string): void {
+        this.channel.send(message);
+    }
+}
+
+
+const email = new EmailNotification();
+const sms = new SMSNotification();
+
+const emailService = new NotificationService(email);
+const smsService = new NotificationService(sms);
+
+emailService.notify('Whats up little marcus!')
+smsService.notify('Howdy Mr Marcus, how you been doing recently?')*/
+
+
+
+class Customer {
+    id: number;
+    name: string;
+    email: string;
+
+    constructor(id: number, name: string, email: string) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
+}
+
+class Product {
+    id: number;
+    name: string;
+    price: number;
+
+    constructor(id: number, name: string, price: number) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
+}
+
+class Order {
+    id: number;
+    customerId: number;
+    products: Product[];
+    total: number;
+
+    constructor(id: number, customerId: number, products: Product[], total: number) {
+        this.id = id;
+        this.customerId = customerId;
+        this.products = products;
+        this.total = total;
+    }
 }
